@@ -65,6 +65,7 @@
 				spotLight1.position.set( 1.5, 4, 4.5 );
 				spotLight2.position.set( 0, 4, 3.5 );
 				spotLight3.position.set( - 1.5, 4, 4.5 );
+				spotLight1.lookAt(new THREE.Vector3(0, 0.5, 0 ))
 
 				lightHelper1 = new THREE.SpotLightHelper( spotLight1 );
 				lightHelper2 = new THREE.SpotLightHelper( spotLight2 );

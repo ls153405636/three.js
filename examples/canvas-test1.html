@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - animation - keyframes</title>
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+		/>
+		<style>
+			body {
+				margin: 0;	
+				padding: 0;
+				overflow: hidden;
+				width: 100%;
+				height: 100%;
+			}
+			#c1 {
+				position: absolute;
+				background-color: rgb(82, 82, 82);
+			}
+			.box {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+			}
+			.box1 {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translateX(-50%) translateY(-50%);
+				background-color: aqua;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<canvas id="c1" width="1000px" height="1000px"></canvas>
+			<div class="box1"></div>
+		</div>
+		<script>
+			let canvas = document.querySelector('#c1')
+			let box = document.querySelector('.box')
+			let divSize = box.getBoundingClientRect()
+			canvas.width = divSize.width
+			canvas.height = divSize.height
+			let box1 = document.querySelector('.box1')
+			let width = 1000
+			let height = 600
+			box1.style.width =width + 'px'
+			box1.style.height =height + 'px'
+			let ctx = canvas.getContext('2d')
+			let option1 = {
+				offsetX: 20,
+				offsetY: 0,
+				width: divSize.width,
+				height: 20,
+				mainLength: width,
+				scale: 1,
+				colors: {
+					bgColor: '#000000',
+					mainColor: '#ff88ff',
+					lineColor: '#ffffff'
+				}
+			}
+			let option2 = {
+				offsetX: 0,
+				offsetY: 20,
+				width: 20,
+				height: divSize.height,
+				mainLength: height,
+				colors: {
+					bgColor: '#000000',
+					mainColor: '#ff88ff',
+					lineColor: '#ffffff'
+				}
+			}
+			drawRuler(option1)
+			drawRuler(option2)
+			function drawRuler(option) {
+				const {offsetX, offsetY, width, height,mainLength, scale, colors:{bgColor, mainColor, lineColor}} = option
+				ctx.scale(scale, scale)
+				ctx.lineWidth = 1
+				if (mainLength< width) {
+					ctx.fillStyle=bgColor;
+					ctx.fillRect(offsetX,offsetY,width,height);
+					ctx.fillStyle=mainColor;
+					ctx.fillRect((width- mainLength) / 2 + offsetX,offsetY,mainLength,height);
+					for(let i = 0; i < width; i+=10) {
+						if (i%100!=0) {
+							ctx.beginPath();
+							ctx.moveTo(i + offsetX,0 + offsetY);
+							ctx.lineTo(i + offsetX, offsetY + height / 2);
+							ctx.strokeStyle=lineColor;
+							ctx.stroke();
+							ctx.save()
+						}
+					}
+					for(let i = 0; i <= width; i+=100) {
+						ctx.beginPath();
+						ctx.moveTo(i + offsetX,0 + offsetY);
+						ctx.lineTo(i + offsetX, offsetY + height);
+						ctx.strokeStyle=lineColor;
+						ctx.stroke();
+						ctx.save()
+					}
+					ctx.textAlign="center";
+					ctx.textBaseline="middle";
+					for(let i = 0; i <= mainLength; i+=100) {
+						ctx.font="14px";
+						ctx.fillText(i,i + (width-mainLength) / 2 + offsetX,height + 15);
+						ctx.save()
+
+					}
+				}else {
+					ctx.fillStyle=bgColor;
+					ctx.fillRect(offsetX,offsetY,width,height);
+					ctx.fillStyle=mainColor;
+					ctx.fillRect(offsetX, offsetY + (height-mainLength) / 2, width, mainLength);
+					for(let i = 0; i < height; i+=10) {
+						if (i%100!=0) {
+							ctx.beginPath();
+							ctx.moveTo(0, offsetY + i);
+							ctx.lineTo(0 + width / 2, offsetY + i);
+							ctx.lineWidth = 1
+							ctx.strokeStyle=lineColor;
+							ctx.stroke();
+							ctx.save()
+
+						}
+					}
+					for(let i = 0; i <= height; i+=100) {
+						ctx.beginPath();
+						ctx.moveTo(0, offsetY + i);
+						ctx.lineTo(0 + width, offsetY + i);
+						ctx.strokeStyle=lineColor;
+						ctx.stroke();
+						ctx.save()
+					}
+					
+					ctx.translate(width,(height-mainLength) / 2 + offsetY)
+					ctx.save()
+					ctx.rotate(-90*Math.PI/180);
+					for(let i = 0; i <= mainLength; i+=100) {
+						ctx.font="14px";
+						ctx.fillText(i, - i,15);
+					}
+				}
+
+			}
+		</script>
+	</body>
+</html>
